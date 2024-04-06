@@ -23,6 +23,12 @@ app.get('/api/feature-totals', (req, res) => {
     res.json(totals);
 });
 
+app.get('/api/feature-time-trend/:feature', (req, res) => {
+    const { feature } = req.params;
+    const trend = data.map(row => ({ Day: row.Day, Value: row[feature] }));
+    res.json(trend);
+});
+
 
 const PORT = process.env.PORT || 3000;
 app.get('/', (req, res) => {
