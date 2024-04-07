@@ -29,7 +29,7 @@ function App() {
   };
 
   useEffect(() => {
-    axios.get("http://localhost:3000/api/data")
+    axios.get("https://roc8-data-visualization.onrender.com/api/data")
       .then(response => {
         setCompleteData(response.data);
         setFilteredData(response.data); 
