@@ -20,13 +20,9 @@ function excelDateToJSDate(excelDate) {
 }
 
 const LineChart = ({ feature , completeData }) => {
-  console.log("complete data in line chart" , completeData);
-  console.log("feature in line chart" , feature);
   const featureData = completeData.map(ele =>  { return { Day : ele.Day , Value : ele[feature] } }  );
-  console.log("feature data is",featureData)
   const [chartData, setChartData] = useState({});
   const  [bool , setBool] = useState(false);
-  console.log("coming here");
 
   useEffect(() => {
     if (feature) {
@@ -45,8 +41,7 @@ const LineChart = ({ feature , completeData }) => {
             }
           });
 
-          console.log("the unique labels are", uniqueLabels ,uniqueLabels.length )
-          console.log("the data is" , uniqueLabels.map(label => aggregatedData[label]) ,uniqueLabels.map(label => aggregatedData[label]).length )
+
   
           setChartData({
             labels: uniqueLabels,

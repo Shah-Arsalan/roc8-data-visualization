@@ -20,16 +20,12 @@ const BarChart = ( {onSelectFeature  , completeData}) => {
             backgroundColor: 'rgba(54, 162, 235, 0.5)',
         }],
     }
-    console.log("The barData is" , bardata);
+
 
     return <div style={{width: "700px"}}><Bar data={bardetails} options={{
         onClick: (e, elements) => {
-            console.log("clicked");
-            console.log("elements" , elements);
             if (elements.length > 0) {
-                console.log("clicked2")
                 const featureName = bardetails.labels[elements[0].index];
-                console.log("feature name" , featureName);
                 onSelectFeature(featureName);
             }
         }

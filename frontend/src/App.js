@@ -31,7 +31,6 @@ function App() {
   useEffect(() => {
     axios.get("http://localhost:3000/api/data")
       .then(response => {
-        console.log("the response of data api is", response.data);
         setCompleteData(response.data);
         setFilteredData(response.data); 
       });

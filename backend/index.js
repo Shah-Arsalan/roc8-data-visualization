@@ -14,28 +14,9 @@ const data = XLSX.utils.sheet_to_json(sheet);
 
 
 app.get('/api/data',(req,res)=> {
-    console.log("data is data api" , data);
     res.json(data);
 })
 
-
-// app.get('/api/feature-totals', (req, res) => {
-//     const totals = data.reduce((acc, row) => {
-//         ['A', 'B', 'C', 'D', 'E', 'F'].forEach(feature => {
-//             acc[feature] = (acc[feature] || 0) + row[feature];
-//         });
-//         return acc;
-//     }, {});
-//     res.json(totals);
-// });
-
-app.get('/api/feature-time-trend/:feature', (req, res) => {
-    const { feature } = req.params;
-    const trend = data.map(row => ({ Day: row.Day, Value: row[feature] }));
-    // console.log("the trend is " , trend)
-    // console.log("the data is" , data.splice(0,10))
-    res.json(trend);
-});
 
 
 
