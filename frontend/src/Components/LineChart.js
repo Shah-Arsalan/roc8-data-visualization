@@ -19,16 +19,18 @@ function excelDateToJSDate(excelDate) {
   return `${day}-${month}-${year}`;
 }
 
-const LineChart = ({ feature }) => {
+const LineChart = ({ feature , completeData }) => {
+  console.log("complete data in line chart" , completeData);
+  console.log("feature in line chart" , feature);
+  const featureData = completeData.map(ele =>  { return { Day : ele.Day , Value : ele[feature] } }  );
+  console.log("feature data is",featureData)
   const [chartData, setChartData] = useState({});
   const  [bool , setBool] = useState(false);
   console.log("coming here");
 
   useEffect(() => {
     if (feature) {
-      axios.get(`http://localhost:3000/api/feature-time-trend/${feature}`)
-        .then(response => {
-          const rawData = response.data;
+          const rawData = featureData;
           const uniqueLabels = []; 
           const aggregatedData = {}; 
   
@@ -56,16 +58,17 @@ const LineChart = ({ feature }) => {
             }],
           });
           setBool(true)
-        })
-        .catch(error => console.error('Error fetching data: ', error));
+      
+
     }
-  }, [feature]);
+  }, [feature , completeData]);
 
 
   
 
   return (
     bool ? (
+
       <div style={{width: 700}}>
         <Line data={chartData} options={{
         responsive: true,
@@ -84,6 +87,7 @@ const LineChart = ({ feature }) => {
         },
     }} />
       </div>
+
     ) : (
       <div></div>
     )
