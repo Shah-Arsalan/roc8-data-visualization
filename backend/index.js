@@ -26,8 +26,11 @@ app.get('/api/feature-totals', (req, res) => {
 app.get('/api/feature-time-trend/:feature', (req, res) => {
     const { feature } = req.params;
     const trend = data.map(row => ({ Day: row.Day, Value: row[feature] }));
+    // console.log("the trend is " , trend)
+    console.log("the data is" , data.splice(0,10))
     res.json(trend);
 });
+
 
 
 const PORT = process.env.PORT || 3000;
