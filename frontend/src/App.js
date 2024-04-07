@@ -8,6 +8,7 @@ function App() {
   const [selectedFeature, setSelectedFeature] = useState(null);
   const [completeData, setCompleteData] = useState([]);
   const [filteredData, setFilteredData] = useState([]);
+  const [loader , setLoader] = useState(true);
 
 
   const applyFilters = (gender, age) => {
@@ -33,6 +34,7 @@ function App() {
       .then(response => {
         setCompleteData(response.data);
         setFilteredData(response.data); 
+        setLoader(false);
       });
   }, []);
 
@@ -63,6 +65,8 @@ function App() {
         </label>
         </div>
       </div>
+
+      {loader && <div>Loading... the site where backend is hosted is slow to respond</div>}
 
       {completeData.length > 0 &&
         <BarChart onSelectFeature={setSelectedFeature} completeData={filteredData} />
