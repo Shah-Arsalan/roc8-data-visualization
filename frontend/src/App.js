@@ -41,7 +41,8 @@ function App() {
 
   return (
     <div className="App">
-      <div className='filter-container'>
+      <div className='filter-container' style={{display: "flex" , flexDirection: "column" , gap: 5 , alignItems :"start"}}>
+      <div>Filter by gender and age :</div>
       <div>
         <label onClick={() => applyFilters("Male")}>
           <input type="radio" name="gender" value="male" />
