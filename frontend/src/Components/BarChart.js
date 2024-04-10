@@ -17,12 +17,12 @@ const BarChart = ( {onSelectFeature  , completeData}) => {
         datasets: [{
             label: 'Total Time Spent on Each Feature',
             data: Object.values(bardata),
-            backgroundColor: 'rgba(54, 162, 235, 0.5)',
+            backgroundColor: [ '#FF69B4'],
         }],
     }
 
 
-    return <div style={{width: "700px"}}><Bar data={bardetails} options={{
+    return <div style={{width: 600}}><Bar data={bardetails} options={{
         onClick: (e, elements) => {
             if (elements.length > 0) {
                 const featureName = bardetails.labels[elements[0].index];

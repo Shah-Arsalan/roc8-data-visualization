@@ -42,9 +42,9 @@ function App() {
 
   return (
     <div className="App">
-      <div className='filter-container' style={{display: "flex" , flexDirection: "column" , gap: 5 , alignItems :"start"}}>
+      <div className='filter-container' style={{display: "flex" , flexDirection: "column" , gap: 10 , alignItems :"start" , marginBottom : 10}}>
       <div>Filter by gender and age :</div>
-      <div>
+      <div style={{curosor:"pointer"}}>
         <label onClick={() => applyFilters("Male")}>
           <input type="radio" name="gender" value="male" />
           Male
@@ -57,11 +57,11 @@ function App() {
         <div>
         <label onClick={() => applyFilters(null, "15-25")}>
           <input type="radio" name="age" value="15-25" />
-          15-25
+          Age 15-25
         </label>
         <label onClick={() => applyFilters(null, ">25")}>
           <input type="radio" name="age" value=">25" />
-          {`>25`}
+          Age {`>25`}
         </label>
         </div>
       </div>

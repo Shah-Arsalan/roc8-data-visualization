@@ -48,7 +48,7 @@ const LineChart = ({ feature , completeData }) => {
             datasets: [{
               label: `Trend for ${feature}`,
               data: uniqueLabels.map(label => aggregatedData[label]),
-              borderColor: 'rgb(75, 192, 192)',
+              borderColor: ['#FF69B4'],
               tension: 0.1
             }],
           });
@@ -64,7 +64,7 @@ const LineChart = ({ feature , completeData }) => {
   return (
     bool ? (
 
-      <div style={{width: 700}}>
+      <div style={{width: 600}}>
         <Line data={chartData} options={{
         responsive: true,
         plugins: {
