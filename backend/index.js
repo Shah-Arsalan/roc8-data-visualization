@@ -1,11 +1,15 @@
 import express from 'express';
 import cors from 'cors';
 import XLSX from 'xlsx';
-import path from 'path';
+import userroute from './Routes/users.route.js'
+import connectionFunc from './DatabaseConnection/database.connection.js';
 
 
 const app = express();
+app.use(express.json());
 app.use(cors());
+
+connectionFunc();
 
 const workbook = XLSX.readFile("./data.xlsx");
 const sheetName = workbook.SheetNames[0];
@@ -17,6 +21,7 @@ app.get('/api/data',(req,res)=> {
     res.json(data);
 })
 
+app.use("/users", userroute)
 
 
 
