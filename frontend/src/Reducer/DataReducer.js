@@ -42,13 +42,13 @@ const DataReducer = (state, action) => {
     }
 
     case "DATEFROM": {
-      console.log("in date reducer from", payload.dateFrom);
-      return { ...state, dateFrom: payload.dateFrom };
+      console.log("in date reducer from", payload.datefrom);
+      return { ...state, dateFrom: payload.datefrom };
     }
 
     case "DATETO": {
       console.log("in date reducer to", payload.dateTo);
-      return { ...state, dateTo: payload.dateTo };
+      return { ...state, dateTo: payload.dateto };
     }
 
     case "CLEAR_FILTERS": {
