@@ -7,18 +7,6 @@ import 'chartjs-plugin-zoom';
 ChartJS.register();
 
 
-function excelDateToJSDate(excelDate) {
-    const excelEpoch = new Date(1899, 11, 30);
-  const milliseconds = (excelDate - 1) * 24 * 60 * 60 * 1000;
-  const jsDate = new Date(excelEpoch.getTime() + milliseconds);
-
-  const day = jsDate.getDate().toString().padStart(2, '0'); 
-  const month = (jsDate.getMonth() + 1).toString().padStart(2, '0'); 
-  const year = jsDate.getFullYear().toString().slice(-2); 
-
-  return `${day}-${month}-${year}`;
-}
-
 const LineChart = ({ feature , completeData }) => {
   const featureData = completeData.map(ele =>  { return { Day : ele.Day , Value : ele[feature] } }  );
   const [chartData, setChartData] = useState({});
@@ -31,7 +19,7 @@ const LineChart = ({ feature , completeData }) => {
           const aggregatedData = {}; 
   
           rawData.forEach(item => {
-            const label = excelDateToJSDate(item.Day);
+            const label = item.Day;
   
             if (!uniqueLabels.includes(label)) {
               uniqueLabels.push(label);

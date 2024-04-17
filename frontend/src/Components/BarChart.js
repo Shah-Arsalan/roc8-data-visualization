@@ -5,6 +5,8 @@ import {Chart as ChartJS} from 'chart.js/auto'
 
 const BarChart = ( {onSelectFeature  , completeData}) => {
 
+    console.log("filtered data in bar graph is" , completeData)
+
     const bardata = completeData.reduce((acc, row) => {
         ['A', 'B', 'C', 'D', 'E', 'F'].forEach(feature => {
             acc[feature] = (acc[feature] || 0) + row[feature];
