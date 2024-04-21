@@ -29,7 +29,7 @@ const Signup = () => {
   const lastname = signupCredentials.lastname;
   const password = signupCredentials.password;
     try {
-      const response = await axios.post("http://localhost:3000/users/signup", {
+      const response = await axios.post("https://roc8-data-visualization.onrender.com/users/signup", {
         email,
         firstname,
         lastname ,
