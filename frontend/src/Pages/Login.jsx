@@ -21,9 +21,51 @@ const Login = () => {
     const email = loginDetails.email;
     const password = loginDetails.password;
     try {
-      const response = await axios.post("http://localhost:3000/users/login", {
+      const response = await axios.post("https://roc8-data-visualization.onrender.com/users/login", {
       email,
       password
+      });
+  
+  
+      if(response.status === 404){
+        console.log("This is 404 error")
+      }
+  
+  
+      if (response.status === 200 || response.status === 201) {
+        localStorage.setItem(
+          "userToken",
+          response.data.token
+  
+        );
+        setToken(response.data.token);
+        const redirectURL = state?.from ? `/${state.from.search}` : "/";
+        setLoading(prev => !prev);
+        navigate(redirectURL);
+      }
+  
+     
+
+      return response.data;
+    } catch (error) {
+      console.error(error);
+        if(axios.isAxiosError(error)){
+          console.log("This is axios error" , error)
+        }
+        // Error: Request failed with status code 401
+  
+        return error;
+    }
+
+  }
+
+  const handleTestLogin = async () => {
+    setLoginDetails({email : "demo@gmail.com" , password : "123456"})
+    setLoading(prev => !prev)
+    try {
+      const response = await axios.post("https://roc8-data-visualization.onrender.com/users/login", {
+      email : "demo@gmail.com",
+      password : "123456"
       });
   
   
@@ -167,6 +209,16 @@ const Login = () => {
               onClick={handleLogin}
             >
               Sign In
+            </Button>
+            <Button
+              size="md"
+              variant="solid"
+              sx={{ marginTop: 2, width: "100%" , background:"#FF69B4" ,  "&:hover": {
+      background: "#FF4D94",
+    },}}
+              onClick={handleTestLogin}
+            >
+              Sign In with test credentials
             </Button>
           </Box>
 

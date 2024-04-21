@@ -61,7 +61,7 @@ const Graphs = () => {
     document.cookie = "dateto=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };
   useEffect(() => {
-    axios.get("http://localhost:3000/api/data").then((response) => {
+    axios.get("https://roc8-data-visualization.onrender.com/api/data").then((response) => {
       dispatch({
         type: "INITIAL_DATA_FETCH",
         payload: { data: response.data },
