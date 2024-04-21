@@ -4,11 +4,15 @@ import axios from "axios";
 import Input from "@mui/joy/Input";
 import { Button } from "@mui/joy";
 import { dark } from "@mui/material/styles/createPalette";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 
 
 const Signup = () => {
   const navigate = useNavigate();
+  const location = useLocation();
+  console.log("location in signup is" , location);
+  const {state } = location;
+  console.log("state in sign up is" , state)
   const [signupCredentials , setSignupCredentials] = useState({
     email:"",
     firstname:"",
@@ -36,7 +40,7 @@ const Signup = () => {
       });
       console.log("in main body" , response)
       if (response.status === 200 || response.status === 201) {
-      navigate("/login");
+        navigate('/login', { state })
       }
       
       return response.data;
@@ -185,8 +189,8 @@ const Signup = () => {
             </Button>
           </Box>
 
-          <Typography fontWeight={300} onClick={()=>navigate('/login')}>
-            Don't have an account? Sign up
+          <Typography fontWeight={300} onClick={()=>navigate('/login', { state })}>
+            Already have an account ? Sign in
           </Typography>
         </Box>
       </Box>

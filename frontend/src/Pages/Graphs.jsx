@@ -1,5 +1,6 @@
 import axios from "axios";
 import { useEffect, useState } from "react";
+import { useLocation } from "react-router-dom";
 import BarChart from "../Components/BarChart";
 import LineChart from "../Components/LineChart";
 import { useAuth } from "../Context/AuthContext";
@@ -7,19 +8,40 @@ import { useFilter } from "../CustomHooks/useFilter";
 import { useData } from "../Context/DataContext";
 
 const Graphs = () => {
+  const location = useLocation();
   const { token, setToken } = useAuth();
   const { state, dispatch } = useData();
-  const [selectedFeature, setSelectedFeature] = useState(null);
   const { filteredData } = useFilter();
-  console.log("filteredData in graphs page", filteredData);
+  const [selectedFeature, setSelectedFeature] = useState(null);
   const [loader, setLoader] = useState(true);
 
+  const generateURL = () => {
+    const queryParams = new URLSearchParams();
+    if (state.gender) queryParams.set("gender", state.gender);
+    if (state.age) queryParams.set("age", state.age);
+    if (state.dateFrom) queryParams.set("dateFrom", state.dateFrom);
+    if (state.dateTo) queryParams.set("dateTo", state.dateTo);
+    return `${window.location.pathname}${queryParams.toString() ? "?" + queryParams.toString() : ""}`;
+  };
+
+
+  const handleFilterChange = (type, value) => {
+    dispatch({
+      type: type,
+      payload: { [type.toLowerCase()]: value },
+    });
+    setCookie(type.toLowerCase(), value, 30);
+  };
+
+  const clearFilters = () => {
+    dispatch({ type: "CLEAR_FILTERS" });
+    clearCookies();
+  };
 
   const logoutHandler = () => {
     localStorage.removeItem("userToken");
     setToken(null);
   };
-
 
   const setCookie = (name, value, days) => {
     const expires = new Date();
@@ -27,35 +49,14 @@ const Graphs = () => {
     document.cookie = `${name}=${value};expires=${expires.toUTCString()};path=/`;
   };
 
-  const getCookie = (name) => {
-    const cookieArr = document.cookie.split(";");
-    for (let i = 0; i < cookieArr.length; i++) {
-      const cookiePair = cookieArr[i].split("=");
-      if (name === cookiePair[0].trim()) {
-        return decodeURIComponent(cookiePair[1]);
-      }
-    }
-    return null;
-  };
-
-
-
-  const handleFilterChange = (type, value) => {
-    dispatch({
-      type : type, 
-      payload : {[type.toLowerCase()] : value}
-    })
-    setCookie(type.toLowerCase(), value, 30); 
-  };
-
-  const clearFilters = () => {
-    dispatch({ type: "CLEAR_FILTERS" });
+  const clearCookies = () => {
     document.cookie = "gender=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "age=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "datefrom=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
     document.cookie = "dateto=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;";
   };
 
+  
   useEffect(() => {
     axios.get("http://localhost:3000/api/data").then((response) => {
       console.log("the response from api", response.data);
@@ -67,10 +68,11 @@ const Graphs = () => {
     });
     console.log("after response");
 
-    const savedGender = getCookie("gender");
-    const savedAge = getCookie("age");
-    const savedDateFrom = getCookie("datefrom");
-    const savedDateTo = getCookie("dateto");
+    const queryParams = new URLSearchParams(location.search);
+    const savedGender = queryParams.get("gender");
+    const savedAge = queryParams.get("age");
+    const savedDateFrom = queryParams.get("dateFrom");
+    const savedDateTo = queryParams.get("dateTo");
 
     if (savedGender) {
       dispatch({ type: "GENDER", payload: { gender: savedGender } });
@@ -84,7 +86,12 @@ const Graphs = () => {
     if (savedDateTo) {
       dispatch({ type: "DATETO", payload: { dateto: savedDateTo } });
     }
-  }, []);
+  }, [location.search]);
+
+  useEffect(() => {
+    const chartURL = generateURL();
+    window.history.replaceState(null, null, chartURL); // Update URL on component mount
+  }, [state]);
 
   return (
     <div>
@@ -112,14 +119,14 @@ const Graphs = () => {
         </div>
         <div>
           <label>
-            <input type="date" value={state.dateFrom ? state.dateFrom : "2022-10-02"} onChange={(e) => handleFilterChange("DATEFROM", e.target.value)} />
+            <input type="date" value={state.dateFrom} onChange={(e) => handleFilterChange("DATEFROM", e.target.value)} />
             From Date :
           </label>
           <label>
-            <input type="date" value={state.dateTo ? state.dateTo : "2022-10-30"} onChange={(e) => handleFilterChange("DATETO", e.target.value)} />
+            <input type="date" value={state.dateTo} onChange={(e) => handleFilterChange("DATETO", e.target.value)} />
             To Date :
           </label>
-          <div>(only from 4-10-2022 to 29-10-2022 )</div>
+          <div>(only from 01-10-2022 to 31-10-2022 )</div>
         </div>
         <button onClick={clearFilters}>Clear Filters</button>
       </div>

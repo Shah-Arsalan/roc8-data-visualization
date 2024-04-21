@@ -3,14 +3,19 @@ import { useState, useEffect } from "react";
 import { Box, Typography } from "@mui/material";
 import Input from "@mui/joy/Input";
 import { Button } from "@mui/joy";
-import { useNavigate } from "react-router-dom";
+import { useNavigate  , useLocation , Navigate} from "react-router-dom";
 import axios from "axios";
 import {useAuth} from "../Context/AuthContext"
 
 const Login = () => {
+  const location = useLocation();
+  console.log("location in login is" , location);
   const navigate = useNavigate()
   const{ token , setToken} = useAuth();
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
+  const { state } = location;
+  console.log("state in login is" , state);
+  console.log("state in login is" , state);
 
   const handleLogin = async () => {
     const email = loginDetails.email;
@@ -34,7 +39,8 @@ const Login = () => {
   
         );
         setToken(response.data.token);
-        navigate("/");
+        const redirectURL = state?.from ? `/${state.from.search}` : "/";
+        navigate(redirectURL);
       }
   
      
@@ -160,7 +166,7 @@ const Login = () => {
             </Button>
           </Box>
 
-          <Typography fontWeight={300} onClick={()=>navigate('/signup')}>
+          <Typography fontWeight={300} onClick={()=>navigate('/signup', { state })}>
             Don't have an account? Sign up
           </Typography>
         </Box>
