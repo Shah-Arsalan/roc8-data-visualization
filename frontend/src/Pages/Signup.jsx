@@ -5,14 +5,15 @@ import Input from "@mui/joy/Input";
 import { Button } from "@mui/joy";
 import { dark } from "@mui/material/styles/createPalette";
 import { useLocation, useNavigate } from "react-router-dom";
+import { grey } from "@mui/material/colors";
+import { Loader } from "../Components/Loader/Loader";
 
 
 const Signup = () => {
+  const [loading , setLoading] = useState(false);
   const navigate = useNavigate();
   const location = useLocation();
-  console.log("location in signup is" , location);
   const {state } = location;
-  console.log("state in sign up is" , state)
   const [signupCredentials , setSignupCredentials] = useState({
     email:"",
     firstname:"",
@@ -22,24 +23,20 @@ const Signup = () => {
 
 
  const signupHandler = async () => {
+  setLoading(prev => !prev)
   const email = signupCredentials.email;
   const firstname = signupCredentials.firstname;
   const lastname = signupCredentials.lastname;
   const password = signupCredentials.password;
-  console.log("coming in fr" , email ,  firstname,
-  lastname,
-  password)
     try {
-      console.log("coming in fr2")
-      console.log("inside try emial", email ,firstname, lastname, password);
       const response = await axios.post("http://localhost:3000/users/signup", {
         email,
         firstname,
         lastname ,
         password
       });
-      console.log("in main body" , response)
       if (response.status === 200 || response.status === 201) {
+        setLoading(prev => !prev);
         navigate('/login', { state })
       }
       
@@ -57,13 +54,15 @@ const Signup = () => {
 
   return (
     <>
+    {loading && <Loader/>}
       <Box
         sx={{
           width: "100%",
-          height: "100%",
+          height: "100vh",
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "#edf2f6",
         }}
       >
         <Box
@@ -71,11 +70,11 @@ const Signup = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "white",
-            width: "30%",
+            width: { xs: "80%", sm: "70%", md: "50%", lg: "40%", xl: "30%" },
             padding: 2,
             justifyContent: "center",
             borderRadius: 4,
-            borderTop: "3px solid blue",
+            borderTop: "3px solid #FF69B4",
           }}
         >
           <Box
@@ -87,11 +86,10 @@ const Signup = () => {
               gap: 0.5,
             }}
           >
-            <Typography variant="h3" fontWeight={300}>
-              Welcome to Linkr
+            <Typography variant="h3" sx={{ textAlign:"center" , cursor: "pointer"}}  fontWeight={300}>
+              Welcome to Roc8 Data Visualization 
             </Typography>
-            <Typography>Get Linked!</Typography>
-            <Typography sx={{ marginTop: 1 }}>Sign In</Typography>
+            <Typography sx={{ marginTop: 1 }}>Sign Up</Typography>
           </Box>
           <Box
             sx={{
@@ -171,6 +169,7 @@ const Signup = () => {
               <Input
                 placeholder="*********"
                 size="md"
+                type="password"
                 variant="outlined"
                 sx={{ width: "100%" }}
                 value={signupCredentials.password}
@@ -178,10 +177,11 @@ const Signup = () => {
               />
             </Box>
             <Button
-              color="primary"
               size="md"
               variant="solid"
-              sx={{ marginTop: 2, width: "100%" }}
+              sx={{ marginTop: 2, width: "100%" , background:"#FF69B4" ,  "&:hover": {
+      background: "#FF4D94",
+    },}}
               onClick={signupHandler}
               
             >
@@ -189,7 +189,7 @@ const Signup = () => {
             </Button>
           </Box>
 
-          <Typography fontWeight={300} onClick={()=>navigate('/login', { state })}>
+          <Typography fontWeight={300} sx={{ textAlign:"center" , cursor: "pointer"}} onClick={()=>navigate('/login', { state })}>
             Already have an account ? Sign in
           </Typography>
         </Box>

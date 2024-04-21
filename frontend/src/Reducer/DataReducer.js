@@ -22,18 +22,15 @@ const DataReducer = (state, action) => {
   const { payload } = action;
   switch (action.type) {
     case "INITIAL_DATA_FETCH": {
-      console.log("the payload data is", payload.data);
       const changedData = payload.data.map((ele) => ({
         ...ele,
         Day: excelDateToJSDate(ele.Day),
       }));
-      console.log("the changed data is ", changedData);
 
       return { ...state, data: changedData };
     }
 
     case "GENDER": {
-      console.log("gender reducer ran", payload.gender);
       return { ...state, gender: payload.gender };
     }
 
@@ -42,12 +39,10 @@ const DataReducer = (state, action) => {
     }
 
     case "DATEFROM": {
-      console.log("in date reducer from", payload.datefrom);
       return { ...state, dateFrom: payload.datefrom };
     }
 
     case "DATETO": {
-      console.log("in date reducer to", payload.dateTo);
       return { ...state, dateTo: payload.dateto };
     }
 
