@@ -6,18 +6,18 @@ import { Button } from "@mui/joy";
 import { useNavigate  , useLocation , Navigate} from "react-router-dom";
 import axios from "axios";
 import {useAuth} from "../Context/AuthContext"
+import { Loader } from "../Components/Loader/Loader";
 
 const Login = () => {
+  const [loading , setLoading] = useState(false);
   const location = useLocation();
-  console.log("location in login is" , location);
   const navigate = useNavigate()
   const{ token , setToken} = useAuth();
   const [loginDetails, setLoginDetails] = useState({ email: "", password: "" });
   const { state } = location;
-  console.log("state in login is" , state);
-  console.log("state in login is" , state);
 
   const handleLogin = async () => {
+    setLoading(prev => !prev)
     const email = loginDetails.email;
     const password = loginDetails.password;
     try {
@@ -40,11 +40,12 @@ const Login = () => {
         );
         setToken(response.data.token);
         const redirectURL = state?.from ? `/${state.from.search}` : "/";
+        setLoading(prev => !prev);
         navigate(redirectURL);
       }
   
      
-      console.log("The response is" , response);
+
       return response.data;
     } catch (error) {
       console.error(error);
@@ -66,6 +67,7 @@ const Login = () => {
 
   return (
     <>
+    {loading && <Loader/>}
       <Box
         sx={{
           width: "100%",
@@ -73,6 +75,7 @@ const Login = () => {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
+          backgroundColor: "#edf2f6",
         }}
       >
         <Box
@@ -80,11 +83,12 @@ const Login = () => {
             display: "flex",
             flexDirection: "column",
             bgcolor: "white",
-            width: "30%",
             padding: 2,
             justifyContent: "center",
             borderRadius: 4,
-            border: "1px solid blue",
+            borderTop: "3px solid #FF69B4",
+            width: { xs: "80%", sm: "70%", md: "50%", lg: "40%", xl: "30%" },
+        
           }}
         >
           <Box
@@ -96,10 +100,9 @@ const Login = () => {
               gap: 0.5,
             }}
           >
-            <Typography variant="h3" fontWeight={300}>
-              Welcome to Linkr
+            <Typography variant="h3" sx={{textAlign :"center"}} fontWeight={300}>
+            Welcome to Roc8 Data Visualization
             </Typography>
-            <Typography>Get Linked!</Typography>
             <Typography sx={{ marginTop: 1 }}>Sign In</Typography>
           </Box>
           <Box
@@ -156,17 +159,18 @@ const Login = () => {
               />
             </Box>
             <Button
-              color="primary"
               size="md"
               variant="solid"
-              sx={{ marginTop: 2, width: "100%" }}
+              sx={{ marginTop: 2, width: "100%" , background:"#FF69B4" ,  "&:hover": {
+      background: "#FF4D94",
+    },}}
               onClick={handleLogin}
             >
               Sign In
             </Button>
           </Box>
 
-          <Typography fontWeight={300} onClick={()=>navigate('/signup', { state })}>
+          <Typography sx={{ textAlign:"center" , cursor: "pointer"}} fontWeight={300} onClick={()=>navigate('/signup', { state })}>
             Don't have an account? Sign up
           </Typography>
         </Box>
