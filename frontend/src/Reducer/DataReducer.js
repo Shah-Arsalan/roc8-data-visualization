@@ -2,8 +2,8 @@ const initialState = {
   data: [],
   gender: null,
   age: null,
-  dateFrom: '2022-10-02',
-  dateTo:'2022-10-30' ,
+  dateFrom: '2022-10-01',
+  dateTo:'2022-10-31' ,
 };
 
 function excelDateToJSDate(excelDate) {
@@ -56,8 +56,8 @@ const DataReducer = (state, action) => {
         ...state,
         gender: null,
         age: null,
-        dateFrom: null,
-        dateTo: null,
+        dateFrom: '2022-10-01',
+        dateTo: '2022-10-31',
       };
     }
 
